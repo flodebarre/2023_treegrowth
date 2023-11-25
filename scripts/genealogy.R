@@ -2,10 +2,13 @@
 
 # Generic stuff ####
 
-mai <- 0.05 + c(0, 0, 0.05, 0)
+mai <- 0.05 + c(0, 0, 0.05, 0) # margins
 
 # Functions ####
 
+#
+# Generate population and its history, discrete non-overlapping generations
+#
 genealogy <- function(mOff = 1.15, vOff = NA, distribOff = "Poisson", nGen = 10, n0 = 10, nmax = 1000){
   # Input parameters
   # mOff  Average number of offspring
@@ -73,6 +76,9 @@ genealogy <- function(mOff = 1.15, vOff = NA, distribOff = "Poisson", nGen = 10,
   pop
 }
 
+#
+# Plot the whole population history
+#
 plotGenealogy <- function(pop, maincol = gray(0.85), dx = 0.2, dy = 0.1, maxSize = NA){
   # pop  population list, as output of the genealogy function
   # maincol  main color
@@ -115,12 +121,18 @@ plotGenealogy <- function(pop, maincol = gray(0.85), dx = 0.2, dy = 0.1, maxSize
   pos
 }
 
+#
+# Draw a sample of the final population
+#
 getSample <- function(size, pop){
   # size  number of leaves to draw
   # pop  population list
   sort(sample(pop[[length(pop)]], size = 8, replace = FALSE))
 }
 
+#
+# Plot the tree corresponding to the sample, on the whole pop's tree
+#
 plotTree <- function(sampleLeaves, pop, pos, colCoal = "red", colLink = "black", colLeaf = "orange", dx = 0.2, dy = 0.1){
   # sample  sample leaves
   # pop  population list
@@ -162,7 +174,9 @@ plotTree <- function(sampleLeaves, pop, pos, colCoal = "red", colLink = "black",
   }
 }
 
-
+#
+# Plot tree only for the sample
+#
 plotTree2 <- function(sampleLeaves, pop, colLink = "black", dx = 0.2, dy = 0.1){
   # sample  sample leaves
   # pop  population list
@@ -231,24 +245,36 @@ plotTree2 <- function(sampleLeaves, pop, colLink = "black", dx = 0.2, dy = 0.1){
   }
 }
 
-
+#
+# Draw populations and plot them, 
+# comparing exponential growth and constant population size
+#
 compareGrowth <- function(nGens = 200, nSamp = 8, n0 = 10, mOff = 1.2, export = TRUE, suffix = ""){
+  # nGens  number of generations to simulate
+  # nSamp  number of samples to draw
+  # n0  initial population size (exp growth)
+  # mOff  average number of offspring
+  # export  whether to export the figures as png
+  # suffic  suffix to add to the figure names
 
-  wpng <- 15
-  hpng1 <- 15
-  hpng2 <- 4
-  res <- 200
-  units <- "cm"
+  # Export parameters
+  wpng <- 15 # pic width
+  hpng1 <- 15 # pic height (1; whole pop)
+  hpng2 <- 4 # pic height (2; tree)
+  res <- 200 # resolution
+  units <- "cm" # unit of pic size
   
   # Exponential growth
+  #  Generate population
   pop.exp <- genealogy(mOff = 1.2, nGen = nGens, n0 = 10, distribOff = "Poisson")
+  #  Draw sample
   sampleLeaves.exp <- getSample(nSamp, pop.exp)
-  
+  #  Plot population history and sample
   if(export) png(paste0("../figs/fullpop_exponential", suffix, ".png"), width = wpng, height = hpng1, res = res, units = units)
   pos.exp <- plotGenealogy(pop.exp)
   plotTree(sampleLeaves.exp, pop.exp, pos.exp)
   if(export) dev.off()
-  
+  #  Plot regular tree for the sample
   if(export) png(paste0("../figs/tree_exponential", suffix, ".png"), width = wpng, height = hpng2, res = res, units = units)
   plotTree2(sampleLeaves.exp, pop.exp)
   if(export) dev.off()
@@ -256,19 +282,18 @@ compareGrowth <- function(nGens = 200, nSamp = 8, n0 = 10, mOff = 1.2, export = 
   # Constant population size
   
   # We use the average number of individuals per generation from the previous simulation
+  # (Same code as previously; not repeating comments)
   pop.cst <- genealogy(mOff = NA, nGen = nGens, n0 = mean(unlist(lapply(pop.exp, length))), distribOff = "Constant")
   sampleLeaves.cst <- getSample(nSamp, pop.cst)
-
+  #
   if(export) png(paste0("../figs/fullpop_constant", suffix, ".png"), width = wpng, height = hpng1, res = res, units = units)
   pos.cst <- plotGenealogy(pop.cst, maxSize = max(unlist(lapply(pop.exp, length))))
   plotTree(sampleLeaves.cst, pop.cst, pos.cst)
   if(export) dev.off()
-  
-  
+  #
   if(export) png(paste0("../figs/tree_constant", suffix, ".png"), width = wpng, height = hpng2, res = res, units = units)
   plotTree2(sampleLeaves.cst, pop.cst)
   if(export) dev.off()
-  
   
 }
 
