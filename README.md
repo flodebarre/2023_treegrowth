@@ -3,7 +3,7 @@ Zamin Iqbal asked on [BlueSky](https://bsky.app/profile/zaminiqbal.bsky.social/p
 
 | Exponential growth | Constant population size |
 |---|---|
-|![fig pop](figs/fullpop_exponential.png)|![fig tree](figs/tree_exponential.png)|
-|![fig pop](figs/fullpop_constant.png)|![fig tree](figs/tree_constant.png)|
+|![fig pop](figs/fullpop_exponential.png)|![fig tree](figs/fullpop_constant.png)|
+|![fig pop](figs/tree_exponential.png)|![fig tree](figs/tree_constant.png)|
 
 (The size of the population is the average size of the population under exponential growth)
