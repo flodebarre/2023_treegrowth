@@ -73,7 +73,7 @@ genealogy <- function(mOff = 1.15, vOff = NA, distribOff = "Poisson", nGen = 10,
   pop
 }
 
-plotGenealogy <- function(pop, maincol = gray(0.8), dx = 0.2, dy = 0.1, maxSize = NA){
+plotGenealogy <- function(pop, maincol = gray(0.85), dx = 0.2, dy = 0.1, maxSize = NA){
   # pop  population list, as output of the genealogy function
   # maincol  main color
   
@@ -121,7 +121,7 @@ getSample <- function(size, pop){
   sort(sample(pop[[length(pop)]], size = 8, replace = FALSE))
 }
 
-plotTree <- function(sampleLeaves, pop, pos, colCoal = "orange", colLink = "black", colLeaf = "red", dx = 0.2, dy = 0.1){
+plotTree <- function(sampleLeaves, pop, pos, colCoal = "red", colLink = "black", colLeaf = "orange", dx = 0.2, dy = 0.1){
   # sample  sample leaves
   # pop  population list
   # pos  positions list
@@ -225,7 +225,6 @@ plotTree2 <- function(sampleLeaves, pop, colLink = "black", dx = 0.2, dy = 0.1){
     }
   }
   # If not MRCA yet, draw segments
-  print(posLeaves)
   if(length(currentLeaves > 1)){
     segments(x0 = dx * rep(1, length(posLeaves)), x1 = dx * timeLeaves, 
              y0 = dy * posLeaves, y1 = dy * posLeaves)
